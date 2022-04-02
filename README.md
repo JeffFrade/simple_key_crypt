@@ -11,6 +11,7 @@ Para testes, foi utilizado o `Docker` para uma melhor visualização e apresenta
 ``` php
 <?php
 
+// Executar o composer dump autoload antes de utilizar para gerar todo o autoload.
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Importação da classe que faz a criptografia e descriptografia.
