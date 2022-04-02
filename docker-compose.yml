@@ -1,0 +1,33 @@
+version: '3.2'
+services:
+  php-fpm:
+    build: ./docker/php
+    image: jefffrade/cripto:php-fpm
+    restart: on-failure
+    container_name: cripto-php-fpm
+    command: php-fpm
+    volumes:
+      - ./:/cripto
+    healthcheck:
+      test: ['CMD', 'sh', '-c', 'netstat -an | fgrep 9000 | fgrep -q LISTEN']
+      interval: 10s
+      timeout: 5s
+      retries: 2
+
+  nginx:
+    build: ./docker/nginx
+    image: jefffrade/cripto:nginx
+    restart: on-failure
+    container_name: cripto-nginx
+    command: nginx -g "daemon off;"
+    links:
+      - php-fpm
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/cripto
+    healthcheck:
+      test: ['CMD', 'sh', '-c', 'netstat -an | fgrep 80 | fgrep -q LISTEN']
+      interval: 10s
+      timeout: 5s
+      retries: 2
